@@ -22,3 +22,27 @@ FUNCTION ROI_PERCENTILE_THRESHOLD, percentage, name, color, fid=fid, dims=dims, 
   
   return, roi_id 
 END
+
+PRO GUI_ROI_PERCENTILE_THRESHOLD
+  ENVI_SELECT, fid=fid, dims=dims, pos=pos, title="Select file for ROI percentile threshold"
+  
+  ; Create dialog box window
+  TLB = WIDGET_AUTO_BASE(title="ROI Percentile Threshold")
+  
+  ; Add widget to select ROI name
+  W_Name = WIDGET_STRING(TLB, /AUTO_MANAGE, prompt="ROI name:", uvalue="name")
+  
+  ; Add widget to select percentage
+  W_Percent = WIDGET_PARAM(TLB, /AUTO_MANAGE, prompt="Percentage Threshold:", uvalue="percent")
+  
+  ; Start the automatic management of the window
+  result = AUTO_WID_MNG(TLB) 
+  
+  ; If the OK button was pressed
+  IF result.accept EQ 0 THEN RETURN
+  
+  ; TODO: Add in options for Top/Bottom and EnsureAboveZero/EnsureBelowZero
+  
+  ; Create the ROI
+  roi_id = ROI_PERCENTILE_THRESHOLD(result.percent, result.name, 3, fid=fid, dims=dims, pos=pos)
+END

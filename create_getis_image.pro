@@ -1,6 +1,6 @@
 @Scale_Vector
 
-PRO NEWGETIS, event
+PRO CREATE_GETIS_IMAGE, event
   ; Use the ENVI dialog box to select a file
   ENVI_SELECT, fid=file,dims=dims,pos=pos, m_fid=m_fid, m_pos=m_pos, /mask, title="Select the image you want to perform the Getis calculation on"
   
@@ -65,7 +65,7 @@ PRO NEWGETIS, event
  
 END
 
-FUNCTION NEWGETIS_NOGUI, file, dims, pos, m_fid, m_pos, distance
+FUNCTION GETIS_NOGUI, file, dims, pos, m_fid, m_pos, distance
   ; Get the details of the file, ready to write to the disk
   ENVI_FILE_QUERY, file, fname=fname, data_type=data_type, xstart=xstart, $
     ystart=ystart, INTERLEAVE=interleave

@@ -29,14 +29,16 @@ PRO CREATE_GLT_IMAGE, x, y, base_filename, reverse_cols=reverse_cols, reverse_ro
   ENVI_WRITE_ENVI_FILE, row_indices_image, data_type=2, interleave=0, nb=1, nl=y, ns=x, offset=0, out_name=base_filename+"_RowIndices.bsq"
 END
 
-PRO GUI_CREATE_GLT_IMAGE, parameter
-  tlb = WIDGET_AUTO_BASE(title="GLT Image")
+PRO GUI_CREATE_GLT_IMAGE, event
+  tlb = WIDGET_AUTO_BASE(title="Create GLT Image")
   x = WIDGET_PARAM(tlb, /auto_manage, dt=3, prompt="X length", uvalue="x", xsize=40)
   y = WIDGET_PARAM(tlb, /auto_manage, dt=3, prompt="Y length", uvalue="y", xsize=40)
   filename = WIDGET_OUTF(tlb, /auto_manage, prompt="Enter output base filename", uvalue="outf")
   reversal = WIDGET_TOGGLE(tlb, /auto_manage, list=["Normal", "Reverse rows", "Reverse columns", "Reverse both"], uvalue="reversal")
   
   result = AUTO_WID_MNG(tlb)
+  
+  IF result.accept EQ 0 THEN RETURN
   
   CASE result.reversal OF
     0: CREATE_GLT_IMAGE, result.x, result.y, result.outf

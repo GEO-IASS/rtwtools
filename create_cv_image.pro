@@ -43,7 +43,7 @@ FUNCTION CREATE_CV_IMAGE, file, dims, pos, distance, report_base
   RETURN, OutputArray
 END
 
-PRO CV, event
+PRO CREATE_CV_IMAGE, event
   ; Use the ENVI dialog box to select a file
   ENVI_SELECT, fid=file,dims=dims,pos=pos
   
