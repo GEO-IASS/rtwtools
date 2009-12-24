@@ -23,7 +23,7 @@ FUNCTION ROI_PERCENTILE_THRESHOLD, percentage, name, color, fid=fid, dims=dims, 
   return, roi_id 
 END
 
-PRO GUI_ROI_PERCENTILE_THRESHOLD
+PRO GUI_ROI_PERCENTILE_THRESHOLD, event
   ENVI_SELECT, fid=fid, dims=dims, pos=pos, title="Select file for ROI percentile threshold"
   
   ; Create dialog box window

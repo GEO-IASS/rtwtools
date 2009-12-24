@@ -62,7 +62,7 @@ PRO SHRINK_ALL_ROIS
   ENDFOR
 END
 
-PRO GUI_SHRINK_ROIS
+PRO GUI_SHRINK_ROIS, event
   ; Ask the user to select a file
   ENVI_SELECT, fid=fid
   

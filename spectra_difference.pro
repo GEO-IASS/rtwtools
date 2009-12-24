@@ -2,7 +2,7 @@ FUNCTION CALCULATE_PERCENTAGE_DIFFERENCE, SPOT, CASI
   return, (ABS(float(SPOT) - CASI)/CASI) * 100
 END
 
-PRO SPECTRA_DIFFERENCE, abs=abs
+PRO SPECTRA_DIFFERENCE, event, abs=abs
   ENVI_SELECT, fid=A_fid, title="Select SLI A (Calibrated File)"
   ENVI_SELECT, fid=B_fid, title="Select SLI B (Ground Data)"
   
