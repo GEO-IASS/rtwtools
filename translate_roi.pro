@@ -17,7 +17,11 @@ PRO TRANSLATE_ROI, fid, roi_id, x, y
   
   ; Perform the translation
   new_x_indices = reform(point_indices[0, *]) + x
-  new_y_indices = reform(point_indices[1, *]) + y
+  
+  negative_one = -1
+  
+  ; Deal with the fact that Y is counted from the bottom not the top
+  new_y_indices = reform(point_indices[1, *]) + (y * negative_one)
   
   ; Create the new ROI and associated the points with it
   new_roi_id = ENVI_CREATE_ROI(nl=nl, ns=ns, name="Translated " + roi_name)
