@@ -35,14 +35,19 @@ PRO GUI_ROI_PERCENTILE_THRESHOLD
   ; Add widget to select percentage
   W_Percent = WIDGET_PARAM(TLB, /AUTO_MANAGE, prompt="Percentage Threshold:", uvalue="percent")
   
+  W_TopBottom = WIDGET_TOGGLE(TLB, /AUTO_MANAGE, list=["Top", "Bottom"], uvalue="topbottom")
+  
+  W_Constraint = WIDGET_TOGGLE(TLB, /AUTO_MANAGE, list=["No constraint", "Ensure above zero", "Ensure below zero"], uvalue="constraint")
+  
   ; Start the automatic management of the window
   result = AUTO_WID_MNG(TLB) 
   
   ; If the OK button was pressed
   IF result.accept EQ 0 THEN RETURN
   
-  ; TODO: Add in options for Top/Bottom and EnsureAboveZero/EnsureBelowZero
-  
-  ; Create the ROI
-  roi_id = ROI_PERCENTILE_THRESHOLD(result.percent, result.name, 3, fid=fid, dims=dims, pos=pos)
+  CASE result.constraint OF
+    0: roi_id = ROI_PERCENTILE_THRESHOLD(result.percent, result.name, 3, fid=fid, dims=dims, pos=pos, bottom=result.topbottom)
+    1: roi_id = ROI_PERCENTILE_THRESHOLD(result.percent, result.name, 3, fid=fid, dims=dims, pos=pos, bottom=result.topbottom, /ensure_above_zero)
+    2: roi_id = ROI_PERCENTILE_THRESHOLD(result.percent, result.name, 3, fid=fid, dims=dims, pos=pos, bottom=result.topbottom, /ensure_below_zero)
+  ENDCASE
 END
