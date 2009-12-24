@@ -49,5 +49,5 @@ PRO GUI_ROI_PERCENTILE_THRESHOLD, event
     0: roi_id = ROI_PERCENTILE_THRESHOLD(result.percent, result.name, 3, fid=fid, dims=dims, pos=pos, bottom=result.topbottom)
     1: roi_id = ROI_PERCENTILE_THRESHOLD(result.percent, result.name, 3, fid=fid, dims=dims, pos=pos, bottom=result.topbottom, /ensure_above_zero)
     2: roi_id = ROI_PERCENTILE_THRESHOLD(result.percent, result.name, 3, fid=fid, dims=dims, pos=pos, bottom=result.topbottom, /ensure_below_zero)
-  ENDCASE
+  ENDCASE  
 END
