@@ -18,19 +18,19 @@ FUNCTION CREATE_CV_IMAGE, file, dims, pos, distance, report_base
     
     N = Dim^2
     
-    AverageImage = SMOOTH(Double(WholeBand), Dim, /EDGE_TRUNCATE)
+    AverageImage = SMOOTH(float(WholeBand), Dim, /EDGE_TRUNCATE)
     
-    SquareImage = Double(WholeBand)^2
+    SquareImage = float(WholeBand)^2
     
-    AverageSquareImage = SMOOTH(Double(SquareImage), Dim, /EDGE_TRUNCATE)
+    AverageSquareImage = SMOOTH(float(SquareImage), Dim, /EDGE_TRUNCATE)
     
-    CVOutput = temporary(AverageSquareImage) - (AverageImage^2)
+    CVOutput = AverageSquareImage - (AverageImage^2)
     
-    VarianceImage = CVOutput * (double(N)/(N-1))
+    VarianceImage = CVOutput * (float(N)/(N-1))
     
     StDevImage = sqrt(VarianceImage)
     
-    CVOutput = double(StDevImage) / AverageImage
+    CVOutput = float(StDevImage) / AverageImage
     
     ; If it's the first time then copy the CV result to OutputArray,
     ; if not then append it to the end of OutputArray
@@ -54,7 +54,7 @@ PRO GUI_CREATE_CV_IMAGE, event
   TLB = WIDGET_AUTO_BASE(title="Create CV Image")
   
   ; Create dropdown list to select distance value
-  list = ['d = 1 (3x3 square)', 'd = 2 (5x5 square)', 'd = 3 (7x7 square)']
+  list = ['d = 1 (3x3 square)', 'd = 2 (5x5 square)', 'd = 3 (7x7 square)', 'd = 4 (9x9 square)']
   
   W_Distance = WIDGET_PMENU(TLB, /AUTO_MANAGE, list=list, uvalue='d')
   

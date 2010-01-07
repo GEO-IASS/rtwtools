@@ -11,7 +11,7 @@ PRO CREATE_GETIS_IMAGE, event
   TLB = WIDGET_AUTO_BASE(title="Create Getis Image")
   
   ; Create dropdown list to select distance value
-  list = ['d = 1 (3x3 square)', 'd = 2 (5x5 square)', 'd = 3 (7x7 square)']
+  list = ['d = 1 (3x3 square)', 'd = 2 (5x5 square)', 'd = 3 (7x7 square)', 'd = 4 (9x9 square)']
   
   W_Distance = WIDGET_PMENU(TLB, /AUTO_MANAGE, list=list, uvalue='d')
   
