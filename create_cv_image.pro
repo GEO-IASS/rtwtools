@@ -1,4 +1,5 @@
 FUNCTION CREATE_CV_IMAGE, file, dims, pos, distance, report_base
+  COMPILE_OPT STRICTARR
   NumRows = dims[2] - dims[1]
   NumCols = dims[4] - dims[3]
   
@@ -44,6 +45,7 @@ FUNCTION CREATE_CV_IMAGE, file, dims, pos, distance, report_base
 END
 
 PRO GUI_CREATE_CV_IMAGE, event
+  COMPILE_OPT STRICTARR
   ; Use the ENVI dialog box to select a file
   ENVI_SELECT, fid=file,dims=dims,pos=pos
   

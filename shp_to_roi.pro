@@ -8,6 +8,7 @@
 ; Adapted from class_image_stats.pro by Andy Pursch, available at http://www.ittvis.com/UserCommunity/CodeLibrary.aspx
 ;
 PRO SHP_TO_ROI, shape_file, image_file
+    COMPILE_OPT STRICTARR
   ; Return to the calling program if there is an error
   ON_ERROR, 2
 

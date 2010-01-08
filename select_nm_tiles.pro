@@ -1,4 +1,6 @@
 FUNCTION INIT_GRIDTILES_ARRAY
+  COMPILE_OPT STRICTARR
+  
   TileStruct = {x:"", y:""}
   GridTiles = replicate(TileStruct, 7, 13)
   
@@ -173,6 +175,7 @@ FUNCTION INIT_GRIDTILES_ARRAY
 END
 
 FUNCTION EVERY_GRID_BETWEEN, bottom, top
+  COMPILE_OPT STRICTARR
   print, top
   print, bottom
   print, top - bottom
@@ -195,6 +198,7 @@ FUNCTION EVERY_GRID_BETWEEN, bottom, top
 END
 
 FUNCTION GET_LETTERS_FROM_GRIDREF, x, y
+  COMPILE_OPT STRICTARR
   x_First = STRMID(x, 1, 1)
   y_First = STRMID(y, 1, 1)
   
@@ -206,6 +210,7 @@ FUNCTION GET_LETTERS_FROM_GRIDREF, x, y
 END
 
 FUNCTION CONVERT_GRIDREF_TO_TILE_REF, x, y
+  COMPILE_OPT STRICTARR
   Chars = GET_LETTERS_FROM_GRIDREF(x, y)
   FirstNum = STRMID(x, 2, 1)
   SecondNum = STRMID(y, 2, 1)
@@ -215,6 +220,7 @@ END
 
 ; Variables need to be input as strings in order bottom, top, left, right
 FUNCTION SELECT_NM_TILES, bl_y, tl_y, bl_x, br_x
+  COMPILE_OPT STRICTARR
   bottom = long(bl_y)
   top = long(tl_y)
   
@@ -238,6 +244,7 @@ FUNCTION SELECT_NM_TILES, bl_y, tl_y, bl_x, br_x
 END
 
 PRO GUI_LEN_WIDTH_TO_NM_TILES, event
+  COMPILE_OPT STRICTARR
   tlb = WIDGET_AUTO_BASE(title="NextMap Tile Selection")
   bl_x = WIDGET_PARAM(tlb, /auto_manage, dt=3, xsize=20, prompt="Bottom Left X", uvalue="bl_x")
   bl_y = WIDGET_PARAM(tlb, /auto_manage, dt=3, xsize=20, prompt="Bottom Left Y", uvalue="bl_y")
@@ -257,6 +264,7 @@ PRO GUI_LEN_WIDTH_TO_NM_TILES, event
 END
 
 PRO GUI_TO_NM_TILES, event
+  COMPILE_OPT STRICTARR
   tlb = WIDGET_AUTO_BASE(title="NextMap Tile Selection")
   bl_x = WIDGET_PARAM(tlb, /auto_manage, dt=3, xsize=20, prompt="Bottom Left X", uvalue="bl_x")
   bl_y = WIDGET_PARAM(tlb, /auto_manage, dt=3, xsize=20, prompt="Bottom Left Y", uvalue="bl_y")
@@ -276,6 +284,7 @@ PRO GUI_TO_NM_TILES, event
 END
 
 PRO IMAGE_TO_NM_TILES, event
+  COMPILE_OPT STRICTARR
   ; Let the user select the file
   ENVI_SELECT, fid=fid
   

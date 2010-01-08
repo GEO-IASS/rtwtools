@@ -1,5 +1,6 @@
 ; Shrink an individual ROI from the file specified with fid
 PRO TRANSLATE_ROI, fid, roi_id, x, y
+  COMPILE_OPT STRICTARR
   ; Get the number of samples
   ENVI_FILE_QUERY, fid, ns=ns, nl=nl
   
@@ -29,6 +30,7 @@ PRO TRANSLATE_ROI, fid, roi_id, x, y
 END
 
 PRO GUI_TRANSLATE_ROIS, event
+  COMPILE_OPT STRICTARR
   ; Ask the user to select a file
   ENVI_SELECT, fid=fid
   

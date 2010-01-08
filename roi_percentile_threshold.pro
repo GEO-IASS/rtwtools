@@ -1,4 +1,5 @@
 FUNCTION ROI_PERCENTILE_THRESHOLD, percentage, name, color, fid=fid, dims=dims, pos=pos, ensure_above_zero=ensure_above_zero, ensure_below_zero=ensure_below_zero, bottom=bottom
+  COMPILE_OPT STRICTARR
   orig_image_data = ENVI_GET_DATA(fid=fid, dims=dims, pos=pos)
   
   if KEYWORD_SET(ensure_below_zero) THEN image_data = orig_image_data[WHERE(orig_image_data LT 0)] ELSE image_data = orig_image_data
@@ -24,6 +25,7 @@ FUNCTION ROI_PERCENTILE_THRESHOLD, percentage, name, color, fid=fid, dims=dims, 
 END
 
 PRO GUI_ROI_PERCENTILE_THRESHOLD, event
+  COMPILE_OPT STRICTARR
   ENVI_SELECT, fid=fid, dims=dims, pos=pos, title="Select file for ROI percentile threshold"
   
   ; Create dialog box window

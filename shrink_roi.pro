@@ -1,5 +1,6 @@
 ; Shrink an individual ROI from the file specified with fid
 PRO SHRINK_ROI, fid, roi_id
+  COMPILE_OPT STRICTARR
   ; Get the number of samples
   ENVI_FILE_QUERY, fid, ns=ns, nl=nl
   
@@ -50,6 +51,7 @@ PRO SHRINK_ROI, fid, roi_id
 END
 
 PRO SHRINK_ALL_ROIS
+  COMPILE_OPT STRICTARR
   ENVI_SELECT, fid=fid
   
   print, fid
@@ -63,6 +65,7 @@ PRO SHRINK_ALL_ROIS
 END
 
 PRO GUI_SHRINK_ROIS, event
+  COMPILE_OPT STRICTARR
   ; Ask the user to select a file
   ENVI_SELECT, fid=fid
   

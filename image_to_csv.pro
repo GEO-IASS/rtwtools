@@ -1,4 +1,5 @@
 PRO IMAGE_TO_CSV, event
+  COMPILE_OPT STRICTARR
   ; Use the ENVI dialog box to select a file
   ENVI_SELECT, fid=file,dims=dims,pos=pos, /BAND_ONLY
   

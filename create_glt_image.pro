@@ -3,6 +3,7 @@
 ; Call this function with the size of the image you want in x and y, and a base filename for the output
 ; images in base_filename
 PRO CREATE_GLT_IMAGE, x, y, base_filename, reverse_cols=reverse_cols, reverse_rows=reverse_rows
+  COMPILE_OPT STRICTARR
   ; Create one row for the column indices image - make it go from 1 rather than 0 by adding 1 to it
   row = indgen(x) + 1
   
@@ -30,6 +31,7 @@ PRO CREATE_GLT_IMAGE, x, y, base_filename, reverse_cols=reverse_cols, reverse_ro
 END
 
 PRO GUI_CREATE_GLT_IMAGE, event
+  COMPILE_OPT STRICTARR
   tlb = WIDGET_AUTO_BASE(title="Create GLT Image")
   x = WIDGET_PARAM(tlb, /auto_manage, dt=3, prompt="X length", uvalue="x", xsize=40)
   y = WIDGET_PARAM(tlb, /auto_manage, dt=3, prompt="Y length", uvalue="y", xsize=40)

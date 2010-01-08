@@ -1,6 +1,7 @@
 @Scale_Vector
 
 PRO CREATE_GETIS_IMAGE, event
+  COMPILE_OPT STRICTARR
   ; Use the ENVI dialog box to select a file
   ENVI_SELECT, fid=file,dims=dims,pos=pos, m_fid=m_fid, m_pos=m_pos, /mask, title="Select the image you want to perform the Getis calculation on"
   
@@ -66,6 +67,7 @@ PRO CREATE_GETIS_IMAGE, event
 END
 
 FUNCTION GETIS_NOGUI, file, dims, pos, m_fid, m_pos, distance
+  COMPILE_OPT STRICTARR
   ; Get the details of the file, ready to write to the disk
   ENVI_FILE_QUERY, file, fname=fname, data_type=data_type, xstart=xstart, $
     ystart=ystart, INTERLEAVE=interleave
@@ -106,6 +108,7 @@ END
 ; Creates a Getis image given a FID, the dimensions of the file, a distance to use for the getis routine
 ; and a base window to send progress updates to as well as a fid and pos for the mask (if any)
 FUNCTION CREATE_GETIS_IMAGE, file, dims, pos, distance, report_base, m_fid, m_pos
+  COMPILE_OPT STRICTARR
   NumRows = dims[2] - dims[1]
   NumCols = dims[4] - dims[3]
   
