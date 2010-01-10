@@ -25,11 +25,13 @@ PRO SPECTRA_DIFFERENCE, event, abs=abs
   envi_file_query, B_fid, fname=B_fname, spec_names=B_spec_names, ns=B_ns, nl=B_nl, file_type=B_file_type, wl=B_wavelengths, data_type=B_dt
   B_spectra = envi_get_data(fid=B_fid, pos=0, dims=[-1,0,B_ns-1, 0, B_nl-1])
   
-  ENVI_RESAMPLE_SPECTRA, B_wavelengths, B_spectra, A_wavelengths, B_spectra_resampled, out_dt=B_dt
-  
   if A_nl NE B_nl THEN BEGIN
     MESSAGE, "Need same number of spectra in each file"
   ENDIF
+  
+  ENVI_RESAMPLE_SPECTRA, B_wavelengths, B_spectra, A_wavelengths, B_spectra_resampled, out_dt=B_dt
+  
+  
   
   Diff_spectra = CALCULATE_PERCENTAGE_DIFFERENCE(A_spectra, B_spectra_resampled)
   
