@@ -28,6 +28,8 @@ PRO GUI_ROI_PERCENTILE_THRESHOLD, event
   COMPILE_OPT STRICTARR
   ENVI_SELECT, fid=fid, dims=dims, pos=pos, title="Select file for ROI percentile threshold"
   
+  if fid EQ -1 THEN RETURN
+  
   ; Create dialog box window
   TLB = WIDGET_AUTO_BASE(title="ROI Percentile Threshold")
   

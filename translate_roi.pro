@@ -34,6 +34,8 @@ PRO GUI_TRANSLATE_ROIS, event
   ; Ask the user to select a file
   ENVI_SELECT, fid=fid
   
+  if fid EQ -1 THEN RETURN
+  
   all_rois = ENVI_GET_ROI_IDS(fid=fid, /LONG_NAME, roi_names=roi_names)
   
   IF all_rois[0] EQ -1 THEN BEGIN

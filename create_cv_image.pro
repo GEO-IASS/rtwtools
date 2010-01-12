@@ -79,9 +79,9 @@ PRO GUI_CREATE_CV_IMAGE, event
   ; Initialise the progress bar window - differently depending if the output is
   ; to memory or to file
   IF result.fm.in_memory EQ 1 THEN BEGIN
-    ENVI_REPORT_INIT, ['Input File: ' + fname, 'Output to memory'], title='Getis status', base=base, /INTERRUPT
+    ENVI_REPORT_INIT, ['Input File: ' + fname, 'Output to memory'], title='CV status', base=base, /INTERRUPT
   ENDIF ELSE BEGIN
-    ENVI_REPORT_INIT, ['Input File: ' + fname, 'Output File: ' + result.fm.name], title='Getis status', base=base, /INTERRUPT
+    ENVI_REPORT_INIT, ['Input File: ' + fname, 'Output File: ' + result.fm.name], title='CV status', base=base, /INTERRUPT
   ENDELSE
   
   ; Call the function to create the Getis image
