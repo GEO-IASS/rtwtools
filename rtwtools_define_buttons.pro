@@ -17,13 +17,13 @@ PRO rtwtools_define_buttons, buttonInfo
       UVALUE = 'Create CV image', EVENT_PRO = 'GUI_CREATE_CV_IMAGE', $
       REF_VALUE = 'LISA', POSITION = 'last'
       
-  ; NeXTMAP root menu
-  ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'NeXTMAP', $
+  ; DEMs root menu
+  ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'DEMs', $
     /MENU, REF_VALUE = 'RTWTools', POSITION = 'last'
     
   ; Select NeXTMAP tiles root menu
   ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'Select NeXTMAP tiles', $
-    /MENU, REF_VALUE = 'NeXTMAP', POSITION = 'last'
+    /MENU, REF_VALUE = 'DEMs', POSITION = 'last'
     
   ; From georef image item
   ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'From georeferenced image', $
@@ -39,6 +39,11 @@ PRO rtwtools_define_buttons, buttonInfo
   ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'From bottom left corner and length/width', $
       UVALUE = 'From bottom left corner and length/width', EVENT_PRO = 'GUI_LEN_WIDTH_TO_NM_TILES', $
       REF_VALUE = 'Select NeXTMAP tiles', POSITION = 'last'
+      
+  ; Calculate Surface Area item
+  ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'Calculate Surface Area', $
+      UVALUE = 'Calculate Surface Area', EVENT_PRO = 'GUI_CALCULATE_SURFACE_AREA', $
+      REF_VALUE = 'DEMs', POSITION = 'last'
   
   ; ROI Tools root menu
   ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'ROI Tools', $
