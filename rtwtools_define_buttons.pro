@@ -64,6 +64,11 @@ PRO rtwtools_define_buttons, buttonInfo
       UVALUE = 'Translate ROIs', EVENT_PRO = 'GUI_TRANSLATE_ROIS', $
       REF_VALUE = 'ROI Tools', POSITION = 'last'
       
+  ; ROI statistics item
+  ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'ROI statistics', $
+      UVALUE = 'ROI Stats', EVENT_PRO = 'GUI_ROI_STATS', $
+      REF_VALUE = 'ROI Tools', POSITION = 'last'
+      
   ; Misc root menu
   ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'Misc', $
     /MENU, REF_VALUE = 'RTWTools', POSITION = 'last'
