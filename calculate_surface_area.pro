@@ -35,7 +35,7 @@ END
 PRO GUI_CALCULATE_SURFACE_AREA, event
     COMPILE_OPT STRICTARR
   ; Use the ENVI dialog box to select a file
-  ENVI_SELECT, fid=file,dims=dims,pos=pos, title="Select the image you want to perform the surface area calculation on"
+  ENVI_SELECT, fid=file,dims=dims,pos=pos, /band, title="Select the image you want to perform the surface area calculation on"
   
   ; If the dialog box was cancelled then stop the procedure
   IF file[0] EQ -1 THEN RETURN
