@@ -25,6 +25,10 @@ FUNCTION ROI_STATS, fid, pos, roi_id, operation=operation
       2: results[i] = median(roi_data)
       ; StDev
       3: results[i] = stdev(roi_data)
+      ; Max
+      4: results[i] = max(roi_data)
+      ; Min
+      5: results[i] = min(roi_data)
     ENDCASE
   ENDFOR
   
@@ -40,7 +44,7 @@ PRO GUI_ROI_STATS, event
   
   all_rois = ENVI_GET_ROI_IDS(fid=fid, /LONG_NAME, roi_names=roi_names)
   
-  operations = ["Sum", "Mean", "Median", "Standard Deviation"]
+  operations = ["Sum", "Mean", "Median", "Standard Deviation", "Maximum", "Minimum"]
   
   ; Create dialog box window
   TLB = WIDGET_AUTO_BASE(title="ROI Statistics")

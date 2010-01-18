@@ -98,9 +98,9 @@ FUNCTION CALCULATE_SURFACE_AREA, fid, pos, dims, report_base
   
   proj = ENVI_GET_PROJECTION(fid=fid, pixel_size=pixel_size)
   
-  pixel_size = pixel_size[0]
+  ;pixel_size = pixel_size[0]
   
-  ;pixel_size = float(10)
+  pixel_size = float(100)
   
   ; Get the data for the current band
   WholeBand = ENVI_GET_DATA(fid=fid, dims=dims, pos=pos)
@@ -123,10 +123,10 @@ FUNCTION CALCULATE_SURFACE_AREA, fid, pos, dims, report_base
   ENVI_REPORT_STAT, report_base, 0.25, 1.0
   
   ; All of the straight bits
-  EB = abs(E - B)
-  EF = abs(E - F)
-  ED = abs(E - D)
-  EH = abs(E - H)
+  EB = sqrt(pixel_size^2 + (E - B)^2)
+  EF = sqrt(pixel_size^2 + (E - F)^2)
+  ED = sqrt(pixel_size^2 + (E - D)^2)
+  EH = sqrt(pixel_size^2 + (E - H)^2)
   
   EB = REPLACE_ZEROES(EB, pixel_size)
   EF = REPLACE_ZEROES(EF, pixel_size)
