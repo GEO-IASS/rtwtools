@@ -97,10 +97,9 @@ FUNCTION CALCULATE_SURFACE_AREA, fid, pos, dims, report_base
   COMPILE_OPT STRICTARR
   
   proj = ENVI_GET_PROJECTION(fid=fid, pixel_size=pixel_size)
+  pixel_size = pixel_size[0]
   
-  ;pixel_size = pixel_size[0]
-  
-  pixel_size = float(100)
+  ;pixel_size = float(100)
   
   ; Get the data for the current band
   WholeBand = ENVI_GET_DATA(fid=fid, dims=dims, pos=pos)
@@ -135,20 +134,30 @@ FUNCTION CALCULATE_SURFACE_AREA, fid, pos, dims, report_base
   
   ENVI_REPORT_STAT, report_base, 0.50, 1.0
   
-  ; Top two diagonals
-  EA = sqrt(EB^2 + pixel_size^2)
-  EC = sqrt(EF^2 + pixel_size^2)
-  EI = sqrt(EH^2 + pixel_size^2)
-  EG = sqrt(ED^2 + pixel_size^2)
+  AB = sqrt((A-B)^2 + pixel_size^2)
+  BC = sqrt((B-C)^2 + pixel_size^2)
+  CF = sqrt((C-F)^2 + pixel_size^2)
+  FI = sqrt((F-I)^2 + pixel_size^2)
+  IH = sqrt((I-H)^2 + pixel_size^2)
+  HG = sqrt((H-G)^2 + pixel_size^2)
+  GD = sqrt((G-D)^2 + pixel_size^2)
+  DA = sqrt((D-A)^2 + pixel_size^2)
+  
+  diag_pixel_size = sqrt(2 * (pixel_size^2))
+  
+  EA = sqrt((E-A)^2 + diag_pixel_size^2)
+  EC = sqrt((E-C)^2 + diag_pixel_size^2)
+  EI = sqrt((E-I)^2 + diag_pixel_size^2)
+  EG = sqrt((E-G)^2 + diag_pixel_size^2)
 
-  Area1 = AREA_OF_TRIANGLE(EA/2, EB/2, pixel_size/2)
-  Area2 = AREA_OF_TRIANGLE(EC/2, EB/2, pixel_size/2)
-  Area3 = AREA_OF_TRIANGLE(EF/2, EC/2, pixel_size/2)
-  Area4 = AREA_OF_TRIANGLE(EI/2, EF/2, pixel_size/2)
-  Area5 = AREA_OF_TRIANGLE(EH/2, EI/2, pixel_size/2)
-  Area6 = AREA_OF_TRIANGLE(EG/2, EH/2, pixel_size/2)
-  Area7 = AREA_OF_TRIANGLE(EG/2, ED/2, pixel_size/2)
-  Area8 = AREA_OF_TRIANGLE(ED/2, EA/2, pixel_size/2)
+  Area1 = AREA_OF_TRIANGLE(EA/2, EB/2, AB/2)
+  Area2 = AREA_OF_TRIANGLE(EC/2, EB/2, BC/2)
+  Area3 = AREA_OF_TRIANGLE(EF/2, EC/2, CF/2)
+  Area4 = AREA_OF_TRIANGLE(EI/2, EF/2, FI/2)
+  Area5 = AREA_OF_TRIANGLE(EH/2, EI/2, IH/2)
+  Area6 = AREA_OF_TRIANGLE(EG/2, EH/2, HG/2)
+  Area7 = AREA_OF_TRIANGLE(EG/2, ED/2, GD/2)
+  Area8 = AREA_OF_TRIANGLE(ED/2, EA/2, DA/2)
   
   ENVI_REPORT_STAT, report_base, 0.75, 1.0
   
