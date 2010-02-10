@@ -49,10 +49,9 @@ PRO GUI_ROI_STATS, event
   ; Create dialog box window
   TLB = WIDGET_AUTO_BASE(title="ROI Statistics")
   
-  ; Create a list of ROIs for the user to select ONLY ONE from
-  W_ROIList = WIDGET_MENU(TLB, /AUTO_MANAGE, list=roi_names, uvalue="roi_name", prompt="Select ROI")
+  ; Create a list of ROIs for the user to select multiple ROIs from
+  W_ROIList = WIDGET_MENU(TLB, /AUTO_MANAGE, list=roi_names, rows=N_ELEMENTS(roi_names), uvalue="roi_name", prompt="Select ROI")
   W_Operation = WIDGET_PMENU(TLB, /AUTO_MANAGE, list=operations, prompt="Select statistic", uvalue="operation")
-  
   
   ; Start the automatic management of the window
   result = AUTO_WID_MNG(TLB) 
@@ -60,24 +59,33 @@ PRO GUI_ROI_STATS, event
   ; If the OK button was pressed
   IF result.accept EQ 0 THEN RETURN
   
-  selected_roi_id = all_rois[result.roi_name]
-  
-  results = ROI_STATS(fid, pos, selected_roi_id, operation=result.operation)
-  
-  ; Get the number of samples
-  ENVI_FILE_QUERY, fid, bnames=bnames
-  print, bnames
-  print, results
-  
-  results_with_names = bnames + ":" + STRCOMPRESS(string(results))
-  
-  print, results_with_names
-  
+  selected_roi_ids = all_rois[WHERE(result.roi_name EQ 1)]
+
+  FOR i = 0, N_ELEMENTS(selected_roi_ids) - 1 DO BEGIN
+    results = ROI_STATS(fid, pos, selected_roi_ids[i], operation=result.operation)
+    
+    ; Get the number of bands
+    ENVI_FILE_QUERY, fid, bnames=bnames
+    print, bnames
+    print, results
+    
+    ENVI_GET_ROI_INFORMATION, selected_roi_ids[i], /short_name, roi_names=roi_name
+    
+    results_with_names = bnames + ":" + STRCOMPRESS(string(results))
+    
+    results_with_names = [roi_name + ":", results_with_names]
+    
+    
+    print, results_with_names
+    
+    IF N_ELEMENTS(all_results) EQ 0 THEN all_results = results_with_names ELSE all_results = [all_results, "", results_with_names]
+  ENDFOR
+
+
   ; Create dialog box window
   result_TLB = WIDGET_AUTO_BASE(title="ROI stats results")
   
-  ; Create a list of ROIs for the user to select ONLY ONE from
-  W_results = WIDGET_SLABEL(result_TLB, prompt = ["Result of ROI Stats:", "Operation: " + operations[result.operation], results_with_names])
+  W_results = WIDGET_SLABEL(result_TLB, prompt = ["Result of ROI Stats:", "Operation: " + operations[result.operation], "", all_results])
 
   widget_control, result_TLB, /realize
 END
