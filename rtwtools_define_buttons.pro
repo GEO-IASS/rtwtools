@@ -44,6 +44,11 @@ PRO rtwtools_define_buttons, buttonInfo
   ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'Calculate Surface Area', $
       UVALUE = 'Calculate Surface Area', EVENT_PRO = 'GUI_CALCULATE_SURFACE_AREA', $
       REF_VALUE = 'DEMs', POSITION = 'last'
+      
+  ; Calculate Surface Area Ratio item
+  ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'Calculate Surface Area Ratio', $
+      UVALUE = 'Calculate Surface Area Ratio', EVENT_PRO = 'CALCULATE_SA_RATIO', $
+      REF_VALUE = 'DEMs', POSITION = 'last'
   
   ; ROI Tools root menu
   ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'ROI Tools', $

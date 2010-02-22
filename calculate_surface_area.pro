@@ -59,6 +59,8 @@ PRO GUI_CALCULATE_SURFACE_AREA, event
   ; Get the map info of the file so that we can output it to the new file
   map_info = ENVI_GET_MAP_INFO(FID=file)
   
+  proj_info = ENVI_GET_PROJECTION(fid=fid, pixel_size=pixel_size)
+  
   ; Initialise the progress bar window - differently depending if the output is
   ; to memory or to file
   IF result.fm.in_memory EQ 1 THEN BEGIN
@@ -83,11 +85,11 @@ PRO GUI_CALCULATE_SURFACE_AREA, event
     ; Then calculate the values needed to create the header file, and create it
     NSamples = dims[2] - dims[1] + 1
     NLines = dims[4] - dims[3] + 1
-    NBands = N_ELEMENTS(pos)
+    NBands = 1
     ENVI_SETUP_HEAD, FNAME=result.fm.name, NS=NSamples, NL=NLines, NB=NBands, $
-      DATA_TYPE=5, offset=0, INTERLEAVE=interleave, $
+      DATA_TYPE=4, offset=0, INTERLEAVE=interleave, $
       XSTART=xstart+dims[1], YSTART=ystart+dims[3], $
-      DESCRIP="Surface Area Image Output", MAP_INFO=map_info, /OPEN, /WRITE
+      DESCRIP="Surface Area Image Output", MAP_INFO=map_info, pixel_size=pixel_size, /OPEN, /WRITE
   ENDELSE
   
 END
@@ -103,6 +105,8 @@ FUNCTION CALCULATE_SURFACE_AREA, fid, pos, dims, report_base
   
   ; Get the data for the current band
   WholeBand = ENVI_GET_DATA(fid=fid, dims=dims, pos=pos)
+  
+  WholeBand = float(WholeBand)
 
   ; Get the individual cell from top left, top middle etc as below
   ; A  B  C
@@ -122,10 +126,10 @@ FUNCTION CALCULATE_SURFACE_AREA, fid, pos, dims, report_base
   ENVI_REPORT_STAT, report_base, 0.25, 1.0
   
   ; All of the straight bits
-  EB = sqrt(pixel_size^2 + (E - B)^2)
-  EF = sqrt(pixel_size^2 + (E - F)^2)
-  ED = sqrt(pixel_size^2 + (E - D)^2)
-  EH = sqrt(pixel_size^2 + (E - H)^2)
+  EB = float(sqrt(pixel_size^2 + (E - B)^2))
+  EF = float(sqrt(pixel_size^2 + (E - F)^2))
+  ED = float(sqrt(pixel_size^2 + (E - D)^2))
+  EH = float(sqrt(pixel_size^2 + (E - H)^2))
   
   EB = REPLACE_ZEROES(EB, pixel_size)
   EF = REPLACE_ZEROES(EF, pixel_size)
@@ -134,21 +138,21 @@ FUNCTION CALCULATE_SURFACE_AREA, fid, pos, dims, report_base
   
   ENVI_REPORT_STAT, report_base, 0.50, 1.0
   
-  AB = sqrt((A-B)^2 + pixel_size^2)
-  BC = sqrt((B-C)^2 + pixel_size^2)
-  CF = sqrt((C-F)^2 + pixel_size^2)
-  FI = sqrt((F-I)^2 + pixel_size^2)
-  IH = sqrt((I-H)^2 + pixel_size^2)
-  HG = sqrt((H-G)^2 + pixel_size^2)
-  GD = sqrt((G-D)^2 + pixel_size^2)
-  DA = sqrt((D-A)^2 + pixel_size^2)
+  AB = float(sqrt((A-B)^2 + pixel_size^2))
+  BC = float(sqrt((B-C)^2 + pixel_size^2))
+  CF = float(sqrt((C-F)^2 + pixel_size^2))
+  FI = float(sqrt((F-I)^2 + pixel_size^2))
+  IH = float(sqrt((I-H)^2 + pixel_size^2))
+  HG = float(sqrt((H-G)^2 + pixel_size^2))
+  GD = float(sqrt((G-D)^2 + pixel_size^2))
+  DA = float(sqrt((D-A)^2 + pixel_size^2))
   
   diag_pixel_size = sqrt(2 * (pixel_size^2))
   
-  EA = sqrt((E-A)^2 + diag_pixel_size^2)
-  EC = sqrt((E-C)^2 + diag_pixel_size^2)
-  EI = sqrt((E-I)^2 + diag_pixel_size^2)
-  EG = sqrt((E-G)^2 + diag_pixel_size^2)
+  EA = float(sqrt((E-A)^2 + diag_pixel_size^2))
+  EC = float(sqrt((E-C)^2 + diag_pixel_size^2))
+  EI = float(sqrt((E-I)^2 + diag_pixel_size^2))
+  EG = float(sqrt((E-G)^2 + diag_pixel_size^2))
 
   Area1 = AREA_OF_TRIANGLE(EA/2, EB/2, AB/2)
   Area2 = AREA_OF_TRIANGLE(EC/2, EB/2, BC/2)
