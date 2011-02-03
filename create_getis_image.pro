@@ -124,16 +124,28 @@ FUNCTION CREATE_GETIS_IMAGE, file, dims, pos, distance, report_base, m_fid, m_po
     ENVI_REPORT_STAT, report_base, CurrPos, NumPos
     
     ; Get the data for the current band
-    WholeBand = ENVI_GET_DATA(fid=file, dims=dims, pos=pos[CurrPos])
+    WholeBand = float(ENVI_GET_DATA(fid=file, dims=dims, pos=pos[CurrPos]))
+    CountOfNAN = 0
+     ; Perform the masking (if needed)
+    if m_fid NE -1 THEN BEGIN
+      ; Load the mask band
+      ENVI_FILE_QUERY, m_fid, dims=dims
+      MaskBand = ENVI_GET_DATA(fid=m_fid, dims=dims, pos=m_pos)
+      
+      indices = WHERE(MaskBand EQ 0, count)
+      CountOfNAN = count
+      IF count GT 0 THEN WholeBand[indices] = !Values.F_NAN
+    endif
     
     ; Get the global mean
-    GlobMean = MEAN(WholeBand)
+    GlobMean = MEAN(WholeBand, /NAN)
     
     ; Get the global variance
-    GlobVariance = VARIANCE(WholeBand)
+    GlobVariance = VARIANCE(WholeBand, /NAN)
+    
     
     ; Get the number of values in the whole image
-    GlobNumber = NumRows * NumCols
+    GlobNumber = (NumRows * NumCols - CountOfNAN)
     
     ; Converts a distance to the length of each side of the square
     ; Eg. A distance of 1 to a length of 3
@@ -147,7 +159,7 @@ FUNCTION CREATE_GETIS_IMAGE, file, dims, pos, distance, report_base, m_fid, m_po
     
     ; Create an image where each element is the sum of the elements within
     ; d around it
-    SummedImage = CONVOL(FLOAT(WholeBand), Kernel, /CENTER, /EDGE_TRUNCATE)
+    SummedImage = CONVOL(FLOAT(WholeBand), Kernel, /CENTER, /EDGE_TRUNCATE, /NAN)
     
     ; Create an image where each element is the result of the top fraction part
     ; of the getis formula
@@ -174,10 +186,13 @@ FUNCTION CREATE_GETIS_IMAGE, file, dims, pos, distance, report_base, m_fid, m_po
     
     ;Apply the mask for each of the bands
     FOR i=0, NumPos -1 DO BEGIN
-      OutputArray[*, *, i] = MaskBand AND OutputArray[*, *, i]
+        indices = WHERE(MaskBand EQ 0, count)
+        IF count GT 0 THEN BEGIN
+        a_indices = ARRAY_INDICES(MaskBand, indices)
+        OutputArray[a_indices[0],a_indices[1],i] = !Values.F_NAN
+        ENDIF
     ENDFOR
   endif
-  
   
   ; Close the progress window
   ENVI_REPORT_INIT,base=report_base, /FINISH
