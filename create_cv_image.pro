@@ -1,4 +1,4 @@
-FUNCTION CREATE_CV_IMAGE, file, dims, pos, distance, report_base
+FUNCTION CREATE_CV_IMAGE, file, dims, pos, distance, report_base, m_fid, m_pos
   COMPILE_OPT STRICTARR
   NumRows = dims[2] - dims[1]
   NumCols = dims[4] - dims[3]
@@ -19,11 +19,11 @@ FUNCTION CREATE_CV_IMAGE, file, dims, pos, distance, report_base
     
     N = Dim^2
     
-    AverageImage = SMOOTH(float(WholeBand), Dim, /EDGE_TRUNCATE)
+    AverageImage = SMOOTH(float(WholeBand), Dim, /EDGE_TRUNCATE, /NAN)
     
     SquareImage = float(WholeBand)^2
     
-    AverageSquareImage = SMOOTH(float(SquareImage), Dim, /EDGE_TRUNCATE)
+    AverageSquareImage = SMOOTH(float(SquareImage), Dim, /EDGE_TRUNCATE, /NAN)
     
     CVOutput = AverageSquareImage - (AverageImage^2)
     
@@ -38,6 +38,25 @@ FUNCTION CREATE_CV_IMAGE, file, dims, pos, distance, report_base
     IF (CurrPos EQ 0) THEN OutputArray = CVOutput ELSE OutputArray = [ [[OutputArray]], [[CVOutput]] ]
   ENDFOR
   
+  ; Perform the masking (if needed)
+  if m_fid NE -1 THEN BEGIN
+    ; Load the mask band
+    ENVI_FILE_QUERY, m_fid, dims=dims
+    MaskBand = ENVI_GET_DATA(fid=m_fid, dims=dims, pos=m_pos)
+    
+    ;Apply the mask for each of the bands
+    FOR i=0, NumPos-1 DO BEGIN
+      indices = WHERE(MaskBand EQ 0, count)
+      IF count GT 0 THEN BEGIN
+          a_indices = ARRAY_INDICES(MaskBand, indices)
+          x = a_indices[0,*]
+          y = a_indices[1,*]
+          band_index = replicate(i, N_ELEMENTS(x))
+          OutputArray[x, y, band_index] = !Values.F_NAN
+      ENDIF
+    ENDFOR
+    
+  ENDIF  
   ; Close the progress window
   ENVI_REPORT_INIT,base=report_base, /FINISH
   
@@ -47,7 +66,7 @@ END
 PRO GUI_CREATE_CV_IMAGE, event
   COMPILE_OPT STRICTARR
   ; Use the ENVI dialog box to select a file
-  ENVI_SELECT, fid=file,dims=dims,pos=pos
+  ENVI_SELECT, fid=file,dims=dims,pos=pos, m_fid=m_fid, m_pos=m_pos, /mask,title="Select the image you want to perform the CV calculation on"
   
   ; If the dialog box was cancelled then stop the procedure
   IF file[0] EQ -1 THEN RETURN
@@ -85,7 +104,7 @@ PRO GUI_CREATE_CV_IMAGE, event
   ENDELSE
   
   ; Call the function to create the Getis image
-  CVImage = CREATE_CV_IMAGE(file, dims, pos, result.d + 1, base)
+  CVImage = CREATE_CV_IMAGE(file, dims, pos, result.d + 1, base, m_fid, m_pos)
 
   IF result.fm.in_memory EQ 1 THEN BEGIN
     ; If the user wanted the result to go to memory then just output it there

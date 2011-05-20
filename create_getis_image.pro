@@ -114,8 +114,6 @@ FUNCTION CREATE_GETIS_IMAGE, file, dims, pos, distance, report_base, m_fid, m_po
   
   NumPos = N_ELEMENTS(pos)
   
-  print, NumPos
-  
   ; Let the progress bar know how many bands we're dealing with (denom. of fraction)
   ENVI_REPORT_INC, report_base, NumPos
   
@@ -168,7 +166,7 @@ FUNCTION CREATE_GETIS_IMAGE, file, dims, pos, distance, report_base, m_fid, m_po
     ; Calculate the square root bit of the formula and then create a single variable
     ; with the bottom fraction part of the formula (this is constant for all pixels)
     SquareRootAnswer = SQRT((FLOAT(NumOfElements) * (GlobNumber - NumOfElements))/(GlobNumber - 1))
-    BottomFraction = GlobVariance * SquareRootAnswer
+    BottomFraction = SQRT(GlobVariance) * SquareRootAnswer
     
     ; Create an image with the getis values in it
     Getis = FLOAT(TopFraction) / BottomFraction
@@ -185,12 +183,15 @@ FUNCTION CREATE_GETIS_IMAGE, file, dims, pos, distance, report_base, m_fid, m_po
     MaskBand = ENVI_GET_DATA(fid=m_fid, dims=dims, pos=m_pos)
     
     ;Apply the mask for each of the bands
-    FOR i=0, NumPos -1 DO BEGIN
-        indices = WHERE(MaskBand EQ 0, count)
-        IF count GT 0 THEN BEGIN
-        a_indices = ARRAY_INDICES(MaskBand, indices)
-        OutputArray[a_indices[0],a_indices[1],i] = !Values.F_NAN
-        ENDIF
+    FOR i=0, NumPos-1 DO BEGIN
+      indices = WHERE(MaskBand EQ 0, count)
+      IF count GT 0 THEN BEGIN
+          a_indices = ARRAY_INDICES(MaskBand, indices)
+          x = a_indices[0,*]
+          y = a_indices[1,*]
+          band_index = replicate(i, N_ELEMENTS(x))
+          OutputArray[x, y, band_index] = !Values.F_NAN
+      ENDIF
     ENDFOR
   endif
   
