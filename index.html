@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>RTWTools by robintw</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>RTWTools</h1>
+        <p>Extensions to ENVI to perform Getis statistics, ACCA, ROI manipulation and more</p>
+
+        <p class="view"><a href="https://github.com/robintw/rtwtools">View the Project on GitHub <small>robintw/rtwtools</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/robintw/rtwtools/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/robintw/rtwtools/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/robintw/rtwtools">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>Welcome to the RTWTools site</h3>
+
+<p>RTWTools is a set of extensions to the ENVI remote-sensing image processing software. These extensions consist of various tools and utilities that I wrote while doing my BSc and PhD degrees at the University of Southampton.</p>
+
+<p><img src="http://www.rtwilson.com/academic/GetisSample.png" alt="Getis Example"></p>
+
+<h2>Features:</h2>
+
+<p>RTWTools contains various tools to do useful things within the ENVI environment. It includes tools to:</p>
+
+<ul>
+<li>Calculate Spatial Statistics (Getis-Ord and Coefficient of Variation)</li>
+<li>Calculate 3D surface area from a DEM</li>
+<li>Shrink ROIs by one pixel or translate them by x and y co-ordinates</li>
+<li>Take percentile thresholds from images (similar to Band Threshold to ROI, but with percentages)</li>
+<li>Calculate ROI statistics</li>
+<li>Perform Landsat ACCA cloud mask generation</li>
+<li>Calculate differences between spectra (BETA)</li>
+<li>Create GLT file for use in ATCOR and AZGCORR</li>
+</ul><p>Download: Click the link on the left-hand side of this page (under Featured Downloads) to download the latest version.</p>
+
+<p>Source Code: The source-code for RTWTools is released under an open-source license. Click the Source tab at the top of the page to browse and download it.</p>
+
+<h2>News</h2>
+
+<p>Version 0.92 has been released. This fixes a major bug which has been found in the routine which calculates Getis statistic values. This means that the numbers previously output by the routine will be wrong, although the spatial pattern will still be correct. This updated version fixes this problem.</p>
+
+<p>Version 0.9 has been released. This is a major bugfix release and fixes a number of problems with the Getis and CV calculation routines. Please download this update.</p>
+
+<p>Version 0.84 has been released. This includes a new tool to calculate the 3D surface area to planimetric surface area ratio, and also updates the 3D surface area calculation tool to ensure that the pixel size is set correctly in the output image.</p>
+
+<p>Version 0.83 has been released. This includes a new version of the ROI Statistics tool, allowing statistics to be performed on multiple ROIs at the same time, in a batch process.</p>
+
+<p>Version 0.82 has now been released. A major bug with the Surface Area calculation has been fixed. Please download the updated version.</p>
+
+<p>Version 0.8 has been released with a new tool (Caculate Surface Area from DEM). The manual has also been updated at last.</p>
+
+<p>Version 0.6.7 has now been released, and has actually been compiled properly now! This means that the file size is much smaller (about 100kb rather than 9.8Mb!) and it should work fine on any computer, with any recent version of ENVI.</p>
+
+<h2>Contact Me</h2>
+
+<p>I've created a Google Group <a href="http://groups.google.com/group/rtwtools">Google Group</a> for discussion about RTWTools. Please post any feature requests, bug reports or other comments there.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/robintw">robintw</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
