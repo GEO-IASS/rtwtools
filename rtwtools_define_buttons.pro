@@ -87,4 +87,9 @@ PRO rtwtools_define_buttons, buttonInfo
   ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'Output band to CSV', $
       UVALUE = 'Output band to CSV', EVENT_PRO = 'IMAGE_TO_CSV', $
       REF_VALUE = 'Misc', POSITION = 'last'
+      
+   ; Landsat ACCA item
+  ENVI_DEFINE_MENU_BUTTON, buttonInfo, VALUE = 'Landsat ACCA', $
+      UVALUE = 'Landsat ACCA', EVENT_PRO = 'ACCA_GUI', $
+      REF_VALUE = 'Misc', POSITION = 'last'
 END

@@ -1,9 +1,10 @@
+;FORWARD_FUNCTION ENVI_GET_DATA, WIDGET_AUTO_BASE, WIDGET_OUTFM, ENVI_GET_MAP_INFO, widget_slabel
+
 FUNCTION ACCA_CALCULATION, fid, dims, pos, report_base
-  
+  COMPILE_OPT STRICTARR
   ENVI_REPORT_INC, report_base, 4
   
-  ; Load each of the bands of the image
-  B1 = ENVI_GET_DATA(fid=fid, dims=dims, pos=0)
+  ; Load each of the bands of the image that we actually use (not B1 or B7)
   B2 = ENVI_GET_DATA(fid=fid, dims=dims, pos=1)
   B3 = ENVI_GET_DATA(fid=fid, dims=dims, pos=2)
   B4 = ENVI_GET_DATA(fid=fid, dims=dims, pos=3)
@@ -41,45 +42,58 @@ FUNCTION ACCA_CALCULATION, fid, dims, pos, report_base
   indices = WHERE(B3 LT 0.08, count)
   IF count GT 0 THEN output[indices] = NONCLOUD
   
+  indices = 0
   
   ; Filter 2
   indices = WHERE(output EQ 0 AND NDSI GT 0.7, count)
   IF count GT 0 THEN output[indices] = NONCLOUD
   SnowCount = count
   
+  indices = 0
+  NDSI = 0
   
   ; Filter 3
   indices = WHERE(output EQ 0 AND B6 GT 300, count)
   IF count GT 0 THEN output[indices] = NONCLOUD
   
+  indices = 0
   
   ; Filter 4
   indices = WHERE(output EQ 0 AND ((1 - B5) * B6) GT 225, count)
   IF count GT 0 THEN output[indices] = AMBIGUOUS
   
+  indices = 0
   
   ; Filter 5
   ind = WHERE(output EQ 0 AND B4 / FLOAT(B3) GT 2.0, count)
   IF count GT 0 THEN output[ind] = AMBIGUOUS
   
+  indices = 0
   
   ; Filter 6
   indices = WHERE(output EQ 0 AND B4 / FLOAT(B2) GT 2.0, count)
   IF count GT 0 THEN output[indices] = AMBIGUOUS
   
+  indices = 0
   
   ; Filter 7
   indices = WHERE(output EQ 0 AND B4 / FLOAT(B5) LT 1.0, count)
   IF count GT 0 THEN output[indices] = AMBIGUOUS
   DesertCount = count
   
+  indices = 0
+  
   ; Filter 8a
   indices = WHERE(output EQ 0 AND ((1 - B5) * B6) GT 210, count)
   IF count GT 0 THEN output[indices] = WARMCLOUD
   
+  indices = 0
+  
   ; Filter 8b (everything that's left - the ELSE clause)
   indices = WHERE(output EQ 0, count)
   IF count GT 0 THEN output[indices] = COLDCLOUD
+  
+  indices = 0
   
   ENVI_REPORT_STAT, report_base, 2, 4
   
@@ -190,6 +204,7 @@ FUNCTION ACCA_CALCULATION, fid, dims, pos, report_base
 END
 
 PRO ACCA_GUI, event
+  COMPILE_OPT STRICTARR
   ENVI_SELECT, fid=fid, dims=dims, pos=pos, title="Select a pre-processed Landsat image"
 
 ; If the dialog box was cancelled then stop the procedure
@@ -248,7 +263,7 @@ PRO ACCA_GUI, event
       DATA_TYPE=1, offset=0, INTERLEAVE=interleave, $
       XSTART=xstart+dims[1], YSTART=ystart+dims[3], $
       DESCRIP="ACCA-generated cloud mask. Cloud cover percentage: " + STRTRIM(STRING(perc_cloud),2) + "%", MAP_INFO=map_info, /OPEN, /WRITE
-  ENDELSE
+  ENDELSE  
   
   ; Display percentage cloud cover to the user
   base = widget_auto_base(title="ACCA Results")
