@@ -1,0 +1,12 @@
+If you use any of the tools included in RTWTools in any academic work then please cite it as below:
+
+Wilson, R. T, 2013, RTWTools for ENVI, Available at http://rtwilson.com/academic/rtwtools
+
+In BibTeX format:
+
+@electronic{,
+  author = {Wilson, R. T.},
+  year = {2013},
+  title = {RTWTools for ENVI},
+  url = {http://rtwilson.com/academic/rtwtools}
+}
